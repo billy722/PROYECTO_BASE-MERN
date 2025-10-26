@@ -1,0 +1,13 @@
+#dependencias
+node_modules
+client/node_modules
+server/node_modules
+
+#entornos
+.env
+
+#Build de react 
+client/dist
+
+#archivos del sistema
+DS_Store
