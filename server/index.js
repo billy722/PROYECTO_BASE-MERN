@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import authRoutes from './routes/auth.js';
 import fs from 'fs';
 import colors from 'colors';
-import { exectSync } from 'child_process';
+import { execSync } from 'child_process';
 
 //detectar rama actual de git
 let currentBranch = "unknown";
