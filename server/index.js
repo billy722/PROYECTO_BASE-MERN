@@ -3,8 +3,15 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import authRoutes from './routes/auth.js';
+import fs from 'fs';
 
-dotenv.config();
+if(fs.existsSync('.env.dev') && process.env.NODE_ENV !== 'production'){
+    dotenv.config({path: '.env.dev'});
+    console.log('Cargando entorno: desarrollo (.env.dev)');
+}else{
+    dotenv.config({path: '.env.prod'});
+    console.log('Cargando entorno: produccion (.env.prod)');
+}
 
 const app = express();
 app.use(cors());
