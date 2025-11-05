@@ -4,13 +4,24 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import authRoutes from './routes/auth.js';
 import fs from 'fs';
+import colors from 'colors';
+import { exectSync } from 'child_process';
+
+//detectar rama actual de git
+let currentBranch = "unknown";
+try{
+    currentBranch = execSync('git rev-parse --abbrev-ref HEAD').toString().trim();
+} catch(err){
+    console.log('No se puede detectar la rama de GIT');
+}
+
 
 if(fs.existsSync('.env.dev') && process.env.NODE_ENV !== 'production'){
     dotenv.config({path: '.env.dev'});
-    console.log('Cargando entorno: desarrollo (.env.dev)');
+    console.log(colors.cyan(`🌱 Estás en la rama: ${currentBranch} | Entorno: desarrollo (.env.dev)`));
 }else{
     dotenv.config({path: '.env.prod'});
-    console.log('Cargando entorno: produccion (.env.prod)');
+    console.log(colors.yellow(`🚀 Estás en la rama: ${currentBranch} | Entorno: producción (.env.prod)`));
 }
 
 const app = express();
