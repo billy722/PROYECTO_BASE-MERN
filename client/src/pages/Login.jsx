@@ -1,8 +1,11 @@
 
-import { useState } from "react";
-import { loginUser } from "../api/authService";
+import { useContext, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Login(){
+    const { login } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -13,17 +16,12 @@ export default function Login(){
         setError(""); //limpiar error previo
 
         try{
-            //llama la funcion Login de authService
-            const data = await loginUser({ email, password });
+           
+            await login({email, password});
 
-            // guardar token
-            localStorage.setItem("token", data.token);
+            alert("Login exitoso");
+            navigate("/home");
 
-            //guardar usuario
-            localStorage.setItem("user", JSON.stringify(data.user));
-
-            //redirigir
-            window.location.href = "/home"
         }catch (err){
             console.log("ERROR COMPLETO: ",err);
             setError(err.response?.data?.msg || "Error al iniciar sesión")
@@ -33,6 +31,7 @@ export default function Login(){
 
     //TODO LO QUE ESTA AQUI SE SIBUJA EN PANTALLA Y DEPENDE DEL ESTADO
     return (
+
         <div>
             <h1>Login</h1>
 
@@ -60,7 +59,7 @@ export default function Login(){
             </form>
 
             {error && <p style={{ color:"red"}}>{error}</p>}
-            {email && <p>{email}</p>}
+
         </div>
     );
 }

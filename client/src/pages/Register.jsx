@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { registerUser } from "../api/authService";
 
+
 export default function Register(){
 
     const [email, setEmail] = useState("");
