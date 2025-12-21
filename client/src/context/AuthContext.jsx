@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { loginUser } from "../api/authService";
+import { authEvents } from "./authEvents";
 
 export const AuthContext = createContext();
 
@@ -23,6 +24,7 @@ export function AuthProvider({ children }) {
     //lo siguiente se ejecuta una sola vez al cargar la app
     //Esto evita que el usuario se desloguee al refrescar la pagina
 
+    // USE EFFECT QUE RESTAURA INICIO DE SESSION
     useEffect(() => {
         const savedToken = localStorage.getItem("token");
         const savedUser = localStorage.getItem("user");
@@ -35,6 +37,16 @@ export function AuthProvider({ children }) {
         }
 
         setLoading(false);
+    }, []);
+
+    //USE EFFECT QUE REGISTRA UN EVENTO GLOBAL
+    useEffect(() => {
+        authEvents.onLogout = logout;
+
+        return () => {
+            authEvents.onLogout =null;
+        };
+        
     }, []);
 
     const login = async (credentials) => {
