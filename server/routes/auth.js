@@ -2,6 +2,7 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js'
+import authMiddleware from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -55,6 +56,22 @@ router.post('/login', async (req,res) => {
 
     }catch(err){
         res.status(500).json({msg: 'Error en el servidor', error: err.message});
+    }
+});
+
+//OBTENER USUARIO LOGEADO
+router.get("/me", authMiddleware, async (req, res) => {
+    try{
+        const user = await User.findById(req.user.id).select("-password");
+
+        if(!user){
+            return res.status(404).json({msg: "Usuario no encontrado"});
+        }
+
+        res.json(user);
+
+    }catch(err){
+        res.status(500).json({msg: "Error del servidor"});
     }
 });
 
