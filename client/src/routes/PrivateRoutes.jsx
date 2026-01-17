@@ -1,9 +1,11 @@
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import { Navigate } from "react-router-dom";
 
 export default function PrivateRoute({ children }){
-    const { isAuth, loading } = useContext(AuthContext);
+    const { isAuth, loading } = useAuth();
+
+    // let valorLoading = loading? true : false;
+    // console.log("el valor de loading es: "+loading+" y valor: "+valorLoading);
 
     if(loading) return <p>Cargando...</p>
 

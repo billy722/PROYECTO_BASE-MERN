@@ -1,6 +1,8 @@
 import { createContext, useState, useEffect } from "react";
 import { loginUser } from "../api/authService";
 import { authEvents } from "./authEvents";
+import { getMe } from "../api/userService";
+
 
 export const AuthContext = createContext();
 
@@ -26,18 +28,30 @@ export function AuthProvider({ children }) {
 
     // USE EFFECT QUE RESTAURA INICIO DE SESSION
     useEffect(() => {
-        const savedToken = localStorage.getItem("token");
-        const savedUser = localStorage.getItem("user");
-
-        if (savedToken && savedUser ){
-            setToken(savedToken);
-            setUser(JSON.parse(savedUser));
-
+        const restoreSession = async () => {
+          const savedToken = localStorage.getItem("token");
+      
+          if (!savedToken) {
+            setLoading(false);
+            return;
+          }
+      
+          try {
             autoLogout(savedToken);
-        }
-
-        setLoading(false);
-    }, []);
+      
+            const userData = await getMe(); // 👈 VALIDACIÓN REAL
+            setUser(userData);
+            setToken(savedToken);
+      
+          } catch (error) {
+            logout(); // token inválido o expirado
+          } finally {
+            setLoading(false);
+          }
+        };
+      
+        restoreSession();
+      }, []);
 
     //USE EFFECT QUE REGISTRA UN EVENTO GLOBAL
     useEffect(() => {
@@ -100,8 +114,8 @@ export function AuthProvider({ children }) {
 
     return (
         <AuthContext.Provider 
-        value={{ user, token, login, logout, isAuth: !!token }} >
-            {loading ? <div>Cargando...</div> : children}
+        value={{ user, token, login, logout, isAuth: !!token, loading }} >
+            {children}
         </AuthContext.Provider>
     );
 

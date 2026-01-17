@@ -1,24 +1,23 @@
 import { useEffect, useState } from "react";
-import { useContext } from "react";
 import { getMe } from "../api/userService";
-import { AuthContext } from "../context/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Home(){
-    const { logout } = useContext(AuthContext);
-    const [user, setUser] = useState(null);
+    const { logout, user } = useAuth();
+    // const [user, setUser] = useState(null);
 
-    useEffect(() => {
-        const fetchUser = async () =>{
-            try{
-                const data = await getMe();
-                setUser(data);
-            }catch(err){
-                console.error("Error al obtener el usuario", err)
-            }
-        };
+    // useEffect(() => {
+    //     const fetchUser = async () =>{
+    //         try{
+    //             const data = await getMe();
+    //             setUser(data);
+    //         }catch(err){
+    //             console.error("Error al obtener el usuario", err)
+    //         }
+    //     };
 
-        fetchUser();
-    }, []);
+    //     fetchUser();
+    // }, []);
 
 
     return(

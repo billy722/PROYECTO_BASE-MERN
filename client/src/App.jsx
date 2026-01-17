@@ -18,7 +18,7 @@ export default function App() {
 
           <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
 
-          <Route path="/register" element={<PrivateRoute><Register /></PrivateRoute>} />
+          <Route path="/register" element={<Register />} />
 
       </Routes>
   );
