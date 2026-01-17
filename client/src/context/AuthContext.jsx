@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useRef } from "react";
 import { loginUser } from "../api/authService";
 import { authEvents } from "./authEvents";
 import { getMe } from "../api/userService";
@@ -83,8 +83,9 @@ export function AuthProvider({ children }) {
 
     const logout = () => {
 
-        if(logoutTimer){
-            clearTimeout(logoutTimer);
+        if(logoutTimer.current){
+            clearTimeout(logoutTimer.current);
+            logoutTimer.current = null;
         }
 
         localStorage.removeItem("token");
@@ -93,7 +94,8 @@ export function AuthProvider({ children }) {
         setUser(null);
     };
 
-    let logoutTimer;
+    // let logoutTimer;
+    const logoutTimer = useRef(null);
 
     const autoLogout = (token) => {
         const expirationTime = getTokenExpiration(token);
@@ -105,7 +107,7 @@ export function AuthProvider({ children }) {
         if (timeLeft <= 0){
             logout();
         }else{
-            logoutTimer = setTimeout(() => {
+            logoutTimer.current = setTimeout(() => {
                 logout();
             }, timeLeft);
         }
