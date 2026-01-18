@@ -1,0 +1,35 @@
+/* SOLO navbar */
+.navbar{
+    display: flex;
+    align-items: center;
+    background-color: #222;
+    color: white;
+    padding: 10px 20px;
+}
+
+.navbar-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.navbar-section.center{
+    justify-content: center;
+}
+
+.navbar-section.right {
+    justify-content: flex-end;
+}
+
+.navbar a {
+    color: white;
+    font-weight: 500;
+}
+
+.navbar button{
+    background: #ffffff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+}

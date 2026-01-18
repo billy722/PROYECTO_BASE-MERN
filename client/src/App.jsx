@@ -3,6 +3,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import PrivateRoute from "./routes/PrivateRoutes";
+import MainLayout from "./layouts/MainLayout";
 
 //BROWSER ROUTER ES EL CONTENEDOR PRINCIPAL DEL ROUTER, ENVUELVE TODA LA APP
 //ROUTES ES EL CONTENEDOR DE RUTAS, AQUI DEFINO QUE MOSTRAR CON CADA URL
@@ -16,7 +17,13 @@ export default function App() {
 
           <Route path="/login" element={<Login />}/>
 
-          <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
+
+
+          <Route element={<PrivateRoute />}>
+            <Route element={<MainLayout />}>
+              <Route path="/home" element={<Home />} />
+            </Route>
+          </Route>
 
           <Route path="/register" element={<Register />} />
 
