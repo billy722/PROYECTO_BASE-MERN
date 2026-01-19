@@ -2,22 +2,45 @@
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { useLoading } from "../hooks/useLoading";
 
 export default function Login(){
     const { login } = useAuth();
     const navigate = useNavigate();
+    const { showLoader, hideLoader } = useLoading();
 
-    const [email, setEmail] = useState("");
+    const [identifier, setIdentifier] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
+    const isEmail = (value) => value.includes("@");
+
+    const isValidRutFormat = (value) =>
+      /^[0-9kK.\-]+$/.test(value);
+
     const handleSubmit = async (e) => {
+        showLoader();
         e.preventDefault(); // evita que la página se recargue
         setError(""); //limpiar error previo
 
         try{
+
+            if (!identifier){
+                setError("Ingrese email o Rut");
+                return;
+            }
            
-            await login({email, password});
+            if (!isEmail(identifier) && !isValidRutFormat(identifier)){
+                setError("Formato de rut inválido");
+                return;
+            }
+
+            if (!password){
+                setError("Ingrese contraseña");
+                return;
+            }
+
+            await login({identifier, password});
 
             alert("Login exitoso");
             navigate("/home");
@@ -25,6 +48,8 @@ export default function Login(){
         }catch (err){
             console.log("ERROR COMPLETO: ",err);
             setError(err.response?.data?.msg || "Error al iniciar sesión")
+        }finally{
+            hideLoader();
         }
 
     };
@@ -37,10 +62,10 @@ export default function Login(){
 
             <form onSubmit={handleSubmit}>
                 <input 
-                    type="email"
-                    placeholder="Correo"
-                    value={email}
-                    onChange= { (e) => setEmail(e.target.value)}
+                    type="text"
+                    placeholder="Email o RUT"
+                    value={identifier}
+                    onChange= { (e) => setIdentifier(e.target.value)}
                 />
 
                 <br/>

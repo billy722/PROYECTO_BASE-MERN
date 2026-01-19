@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js'
 import authMiddleware from '../middleware/authMiddleware.js';
+import { normalizeRut, validateRut } from '../utils/rut.js';
 
 const router = express.Router();
 
@@ -13,13 +14,41 @@ router.post('/register', async (req, res) => {
 
         console.log('Body recibido: ', req.body);
 
-        const {name, email, password, role} = req.body;
+        const {name, email, rut, password, role} = req.body;
 
-        const existe = await User.findOne({email});
-        if(existe) return res.status(400).json({msg: 'Usuario existe'});
+        if (!email && !rut) {
+            return res.status(400).json({
+              msg: "Debe ingresar email o RUT"
+            });
+          }
+
+        let normalizedRut = null;
+
+        if (rut) {
+            if (!validateRut(rut)) {
+              return res.status(400).json({ msg: "RUT inválido" });
+            }
+            normalizedRut = normalizeRut(rut);
+          }
+          
+          const existeUsuario = await User.findOne({
+            $or: [
+                email ? { email: email.toLowerCase()} : null,
+                normalizedRut ? { rut: normalizedRut } : null
+            ].filter(Boolean)
+          });
+        
+          if(existeUsuario) {
+            if(existeUsuario.email === email?.toLowerCase()) {
+                return res.status(400).json({ msg: "Correo ya registrado" });
+            }
+            if(existeUsuario.rut === normalizedRut){
+                return res.status(400).json({ msg: "RUT ya existe"});
+            }
+          }
 
         const hashed = await bcrypt.hash(password, 10);
-        const nuevoUsuario = new User({name, email,password:hashed, role});
+        const nuevoUsuario = new User({name, email, rut: normalizedRut,password:hashed, role});
         await nuevoUsuario.save();
 
         res.json({msg: "Usuario creado correctamente"});
@@ -34,9 +63,16 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req,res) => {
     try{
 
-        const {email, password} = req.body;
+        const {identifier, password} = req.body;
 
-        const usuario = await User.findOne({email});
+
+        const usuario = await User.findOne({
+            $or: [
+                { email: identifier.toLowerCase() },
+                { rut: normalizeRut(identifier) }
+            ]
+        });
+
         if(!usuario) return res.status(400).json({msg: 'Credenciales incorrectas'});
 
         const coincide = await bcrypt.compare(password, usuario.password);
