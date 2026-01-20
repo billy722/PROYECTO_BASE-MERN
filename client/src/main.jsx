@@ -7,7 +7,7 @@ import "./styles/globals.css";
 import GlobalLoader from "./components/GlobalLoader/GlobalLoader";
 import { LoadingProvider } from "./context/LoadingContext";
 import { AlertProvider } from "./context/AlertContext";
-import Alert from "./components/Alert/Alert";
+import GlobalAlert from "./components/GlobalAlert/GlobalAlert";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -15,7 +15,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <LoadingProvider>
         <BrowserRouter>
           <AuthProvider>
-            <Alert />
+            <GlobalAlert />
             <GlobalLoader />
             <App />
           </AuthProvider>

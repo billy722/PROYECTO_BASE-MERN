@@ -1,7 +1,7 @@
-import "./Alert.css";
+import "./GlobalAlert.css";
 import { useAlert } from "../../hooks/useAlert";
 
-export default function Alert(){
+export default function GlobalAlert(){
     const { alert } = useAlert();
 
     if(!alert) return null;

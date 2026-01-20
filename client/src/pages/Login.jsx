@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "../hooks/useAlert";
+import "./Login.css";
 
 export default function Login(){
     const { login } = useAuth();
@@ -57,33 +58,39 @@ export default function Login(){
     //TODO LO QUE ESTA AQUI SE SIBUJA EN PANTALLA Y DEPENDE DEL ESTADO
     return (
 
-        <div>
-            <h1>Login</h1>
+        <div className="login-container">
 
-            <form onSubmit={handleSubmit}>
-                <input 
-                    type="text"
-                    placeholder="Email o RUT"
-                    value={identifier}
-                    onChange= { (e) => setIdentifier(e.target.value)}
-                />
+            <div className="login-form-container">
 
-                <br/>
+                <h1>Login</h1>
 
-                <input 
-                type="password"
-                placeholder="Contraseña"
-                value={password}
-                onChange= {(e) => setPassword(e.target.value)}
-                />
+                <form onSubmit={handleSubmit}>
+                    <input 
+                        type="text"
+                        placeholder="Email o RUT"
+                        value={identifier}
+                        onChange= { (e) => setIdentifier(e.target.value)}
+                    />
 
-                <br/>
+                    <br/>
 
-                <button type="submit">Enviar</button>
+                    <input 
+                    type="password"
+                    placeholder="Contraseña"
+                    value={password}
+                    onChange= {(e) => setPassword(e.target.value)}
+                    />
 
-            </form>
+                    <br/>
 
-            {error && <p style={{ color:"red"}}>{error}</p>}
+                    <button type="submit">Enviar</button>
+
+                </form>
+
+                {error && <p style={{ color:"red"}}>{error}</p>}
+
+            </div>
+
 
         </div>
     );
