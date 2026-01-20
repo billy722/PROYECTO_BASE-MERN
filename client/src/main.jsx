@@ -6,16 +6,21 @@ import { AuthProvider } from "./context/AuthContext";
 import "./styles/globals.css";
 import GlobalLoader from "./components/GlobalLoader/GlobalLoader";
 import { LoadingProvider } from "./context/LoadingContext";
+import { AlertProvider } from "./context/AlertContext";
+import Alert from "./components/Alert/Alert";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <LoadingProvider>
-      <BrowserRouter>
-        <AuthProvider>
-          <GlobalLoader />
-          <App />
-        </AuthProvider>
-      </BrowserRouter>
-    </LoadingProvider>  
+    <AlertProvider>
+      <LoadingProvider>
+        <BrowserRouter>
+          <AuthProvider>
+            <Alert />
+            <GlobalLoader />
+            <App />
+          </AuthProvider>
+        </BrowserRouter>
+      </LoadingProvider>  
+    </AlertProvider> 
   </React.StrictMode>
 );

@@ -3,11 +3,13 @@ import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useLoading } from "../hooks/useLoading";
+import { useAlert } from "../hooks/useAlert";
 
 export default function Login(){
     const { login } = useAuth();
     const navigate = useNavigate();
     const { showLoader, hideLoader } = useLoading();
+    const { showAlert } = useAlert();
 
     const [identifier, setIdentifier] = useState("");
     const [password, setPassword] = useState("");
@@ -42,12 +44,15 @@ export default function Login(){
 
             await login({identifier, password});
 
-            alert("Login exitoso");
+            // alert("Login exitoso");
+            showAlert("Bienvenido", "success");
+
             navigate("/home");
 
         }catch (err){
             console.log("ERROR COMPLETO: ",err);
-            setError(err.response?.data?.msg || "Error al iniciar sesión")
+            setError(err.response?.data?.msg || "Error al iniciar sesión");
+            showAlert("Error al iniciar sesión", "error");
         }finally{
             hideLoader();
         }

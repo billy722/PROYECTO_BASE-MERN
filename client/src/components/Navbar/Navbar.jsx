@@ -9,12 +9,13 @@ export default function Navbar() {
         <nav className="navbar">
 
             <div className="navbar-section left">
-                <strong>App Base </strong>
+                <strong>Logo App Base </strong>
             </div>
 
             <div className="navbar-section center">
                 <Link to="/home">Home</Link>
-                <Link to="/ventas">Ventas</Link>
+                <Link to="/pagina1">Pagina uno</Link>
+                <Link to="/pagina1">Pagina dos</Link>
             </div>
 
             <div className="navbar-section right">

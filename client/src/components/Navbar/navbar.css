@@ -2,7 +2,7 @@
 .navbar{
     display: flex;
     align-items: center;
-    background-color: #222;
+    background-color: #1D1D1D;
     color: white;
     padding: 10px 20px;
 }
@@ -23,8 +23,12 @@
 }
 
 .navbar a {
-    color: white;
+    color: rgb(204, 204, 204);
     font-weight: 500;
+}
+
+.navbar a:hover{
+    color: rgb(255, 255, 255);
 }
 
 .navbar button{
