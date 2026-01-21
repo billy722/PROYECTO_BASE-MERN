@@ -15,7 +15,9 @@
 }
 
 .navbar-section.center{
-    justify-content: center;
+    justify-content: start;
+    flex: 2;
+
 }
 
 .navbar-section.right {

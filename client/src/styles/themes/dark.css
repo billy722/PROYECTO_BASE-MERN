@@ -1,0 +1,10 @@
+[data-theme="dark"]{
+    --bg: #222;
+    --text: #ffffff;
+
+    --primary: #2980b9;
+    --success: #27ae60;
+    --warning: #f39c12;
+    --danger:  #c0392b;
+
+}

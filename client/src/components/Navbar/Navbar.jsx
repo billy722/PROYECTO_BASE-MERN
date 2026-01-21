@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth"
 import "./navbar.css"
+import ThemeToggle from "../ThemeToggle/ThemeToggle";
 
 export default function Navbar() {
     const { user, logout } = useAuth();
@@ -19,11 +20,13 @@ export default function Navbar() {
             </div>
 
             <div className="navbar-section right">
+
                 {user && (
                     <>
                     <span>
-                        {user.name} ({user.role})
+                        <p>{user.name} ({user.role})</p>
                     </span>
+                    <ThemeToggle />
                     <button onClick={logout}>Cerrar sesión</button>
                     </>
                 )}

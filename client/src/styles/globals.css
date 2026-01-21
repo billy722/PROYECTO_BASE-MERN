@@ -1,22 +1,19 @@
 /* reset, tipografía, cosas generales */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  
-  body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: #262626;
-    color: #fff;
-  }
-  
-  a {
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  button {
-    cursor: pointer;
-  }
-  
+@import "./base/reset.css";
+@import "./base/variables.css";
+@import "./base/typography.css";
+
+@import "./themes/index.css";
+
+@import "./utilities/spacing.css";
+@import "./utilities/layout.css";
+
+@import "./components/buttons.css";
+@import "./components/forms.css";
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-base);
+}
+

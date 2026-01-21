@@ -1,0 +1,17 @@
+.btn{
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-primary{ background: var(--primary); color: white; }
+.btn-success{ background: var(--success); color: white; }
+.btn-warning{ background: var(--warning); color: white; }
+.btn-danger{ background: var(--danger); color: white; }
+
+.btn-outline{
+    background: transparent;
+    border: 1px solid currentColor;
+}

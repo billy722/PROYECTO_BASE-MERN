@@ -1,0 +1,22 @@
+/* estructura general (main, contenedores) */
+.main-container {
+    padding: var(--space-lg);
+    max-width: var(--container-with);
+    margin: 0 auto;
+  }
+
+.flex{
+    display: flex;
+}
+
+.flex-between{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flex-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

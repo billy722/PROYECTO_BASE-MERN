@@ -3,12 +3,14 @@ import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "../hooks/useAlert";
+import { useModal } from "../hooks/useModal";
 import "./Login.css";
 
 export default function Login(){
     const { login } = useAuth();
     const navigate = useNavigate();
     const { showAlert } = useAlert();
+    const modal = useModal();
 
     const [identifier, setIdentifier] = useState("");
     const [password, setPassword] = useState("");
@@ -44,7 +46,13 @@ export default function Login(){
             await login({identifier, password});
 
             // alert("Login exitoso");
-            showAlert("Bienvenido", "success");
+            // showAlert("Bienvenido", "success");
+            modal.show({
+                type: "success",
+                title: "Bienvenido",
+                message: "Has ingresado correctamente",
+            });
+
 
             navigate("/home");
 

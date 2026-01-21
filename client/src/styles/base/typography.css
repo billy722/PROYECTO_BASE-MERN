@@ -1,0 +1,13 @@
+body{
+    font-family: var(--font-base);
+    color: --var(--dark);
+}
+
+h1 { font-size: 24px; margin-bottom: var(--space-md); }
+h2 { font-size: 24px; margin-bottom: var(--space-sm); }
+h3 { font-size: 24px; margin-bottom: var(--space-sm); }
+
+p {
+    margin-bottom: var(--space-sm);
+    line-height: 1.4;
+}
