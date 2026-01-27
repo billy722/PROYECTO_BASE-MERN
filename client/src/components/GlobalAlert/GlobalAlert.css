@@ -1,25 +1,20 @@
 .alert-container{
+    position: fixed;
     inset: 0;
+    background: rgba(0,0,0,0.5);
     display: flex;
     align-items: center;
     justify-content: center;
-    position: fixed;
     z-index: 9999;
-    background: rgba(255, 255, 255, 0.1);
 }
 
 .alert{
-    display: flex;
-    position: fixed;
-    align-items: center;
-    justify-content: center;
-    width: 40%;
-    height: 40%;
-    padding: 12px 18px;
-    border-radius: 6px;
-    color: white;
-    z-index: 9998;
-    font-size: x-large;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 320px;
+    color: rgb(255, 255, 255);
+    text-align: center;
 }
 .alert.info{
     background: #3498db;
@@ -29,6 +24,9 @@
     background: #2ecc71;
 }
 
+.alert.warning{
+    background: #eab327;
+} 
 .alert.error{
     background: #e74c3c;
 } 

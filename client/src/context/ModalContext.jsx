@@ -5,19 +5,12 @@ const ModalContext = createContext();
 
 export function ModalProvider({children}){
     const [modal, setModal] = useState({
-        open: true,
-        type: MODAL_TYPES.SUCCESS,
-        title: "BIENVENIDO",
-        message: "Has ingresado correctamente",
-        onConfirm: true,
+        open: false,
+        type: MODAL_TYPES.INFO,
+        title: "",
+        message: "",
+        onConfirm: null,
     });
-    // const [modal, setModal] = useState({
-    //     open: false,
-    //     type: MODAL_TYPES.INFO,
-    //     title: "",
-    //     message: "",
-    //     onConfirm: null,
-    // });
 
     const show = ({type, title, message, onConfirm}) => {
         setModal({
