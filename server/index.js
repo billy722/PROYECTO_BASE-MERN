@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import authRoutes from './routes/auth.js';
+import usersRoutes from './routes/usersRoutes.js';
 import fs from 'fs';
 import colors from 'colors';
 import { execSync } from 'child_process';
@@ -38,7 +39,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/auth/', authRoutes);
-
+app.use('/api/users/', usersRoutes);
 
 const PORT = process.env.PORT || 4000;
 

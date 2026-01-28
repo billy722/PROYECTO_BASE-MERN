@@ -7,7 +7,7 @@ export default function Register(){
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
-    const [role, setRole] = useState("vendedor");
+    const [role, setRole] = useState("admin");
     const [mensaje, setMensaje] = useState("");
 
     const handleSubmit = async (e) =>{
@@ -55,7 +55,7 @@ export default function Register(){
 
                 <select value={role} onChange={(e) => setRole(e.target.value)}>
                     <option value="admin">Administrador</option>
-                    <option value="vendedor">Vendedor</option>
+                    <option value="user">Usuario</option>
                 </select>
 
                 <button type="submit">REGISTRAR</button>
