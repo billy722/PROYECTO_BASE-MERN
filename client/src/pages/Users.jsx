@@ -1,7 +1,21 @@
 import { useUsers } from "../hooks/useUsers";
+import { useModal } from "../hooks/useModal";
+import { MODAL_TYPES } from "../constants/modalTypes";
 
 export default function Users(){
-    const { users } = useUsers();
+    const { users, removeUser } = useUsers();
+    const { show } = useModal();
+
+    const handleDelete = (user) => {
+        // alert("funciona "+user.name);
+
+        show({
+            type: MODAL_TYPES.DANGER,
+            title: "Desea eliminar?",
+            message: "Esta seguro que desea eliminar este usuario?",
+            onConfirm: () => removeUser(user._id)
+        });
+    };
 
     return(
         <div className="page">
@@ -26,6 +40,7 @@ export default function Users(){
                                 <td>{user.email || "-"}</td>
                                 <td>{user.rut || "-"}</td>
                                 <td>{user.role}</td>
+                                <td><button onClick={() => handleDelete(user)}>X</button></td>
                             </tr>
                         ))}
                     </tbody>

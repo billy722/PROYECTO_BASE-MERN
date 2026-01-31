@@ -39,7 +39,8 @@ export function useUsers(){
     const removeUser = async (id) => {
         try{
             await deleteUser(id);
-            showAlert("Usuario eliminado.", ALERT_TYPES.SUCCESS)
+            showAlert("Usuario eliminado.", ALERT_TYPES.SUCCESS);
+            fetchUsers();
         }catch{
             showAlert("Error al eliminar el usuario.", ALERT_TYPES.ERROR);
         }
