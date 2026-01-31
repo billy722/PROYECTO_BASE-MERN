@@ -4,6 +4,7 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import PrivateRoute from "./routes/PrivateRoutes";
 import MainLayout from "./layouts/MainLayout";
+import Users from "./pages/Users";
 
 //BROWSER ROUTER ES EL CONTENEDOR PRINCIPAL DEL ROUTER, ENVUELVE TODA LA APP
 //ROUTES ES EL CONTENEDOR DE RUTAS, AQUI DEFINO QUE MOSTRAR CON CADA URL
@@ -23,6 +24,7 @@ export default function App() {
           <Route element={<PrivateRoute />}>
             <Route element={<MainLayout />}>
               <Route path="/home" element={<Home />} />
+              <Route path="/users" element={<Users/>} />
             </Route>
           </Route>
 
