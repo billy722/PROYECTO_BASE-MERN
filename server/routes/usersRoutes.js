@@ -24,7 +24,7 @@ router.get("/", async (req, res) => {
 
 
 //POST DE USUARIO CON CON RUT O EMAIL
-router.post('/', async (req, res) => {
+router.post('/', authMiddleware, async (req, res) => {
     try{
 
         console.log('Body recibido: ', req.body);
@@ -108,65 +108,84 @@ router.post('/', async (req, res) => {
 //     }
 // });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", authMiddleware,async (req, res) => {
     try {
+        const { id } = req.params;
         const { name, email, rut, password, role } = req.body;
 
-        if (!email && !rut) {
-            return res.status(400).json({
-                msg: "Debe ingresar email o RUT"
+        // solo admin puede editar usuarios
+        if(req.user.role !== "admin"){
+            return res.status(403).json({msg: "Usuario no autorizado"});
+        }
+
+        // usuario existe?
+        const user = await User.findById(id);
+        if(!user){
+            return res.status(404).json({msg: "Usuario no encontrado"});
+        }
+
+        // donde guardamos info para actualizar
+        const updateData = {};
+
+        //se actulaiza nombre
+        if(name) updateData.name = name;
+
+        //email (opcions)
+        if(email !== undefined){
+            const existsEmail = await User.finOne({
+                email: email.toLowerCase(),
+                _id: { $ne: id }
             });
+
+            if(existsEmail){
+                return res.status(400).json({msg: "Correo ya registrado"});
+            }
+
+            updateData.email = email.toLowerCase();
         }
 
-        let normalizedRut = null;
+        // RUT (opcional)
+        if(rut !== undefined){
 
-        if (rut) {
-            if (!validateRut(rut)) {
-                return res.status(400).json({ msg: "RUT inválido" });
+            //si el rut viene en el body pero vacio
+            if(rut === ""){
+                // eliminar rut
+                updateData.$unset = {rut: ""};
+            }else{
+                // si viene un rut desde el form
+                if(!validateRut(rut)){
+                    return res.status(400).json({msg: "RUT ingresado es invalido"});
+                }
+
+                const normalizedRut = normalizeRut(rut);
+
+                const existeRut = await User.findOne({
+                    rut: normalizedRut,
+                    _id: { $ne: id }
+                });
+
+                if(existeRut){
+                    return res.status(400).json({msg: "RUT ingresado ya existe"});
+                }
+
+                updateData.rut = normalizedRut;
             }
-            normalizedRut = normalizeRut(rut);
+
         }
 
-        // 🔍 buscar duplicados EXCLUYENDO al usuario actual
-        const existeUsuario = await User.findOne({
-            _id: { $ne: req.params.id },
-            $or: [
-                email ? { email: email.toLowerCase() } : null,
-                normalizedRut ? { rut: normalizedRut } : null
-            ].filter(Boolean)
-        });
-
-        if (existeUsuario) {
-            if (existeUsuario.email === email?.toLowerCase()) {
-                return res.status(400).json({ msg: "Correo ya registrado" });
-            }
-            if (existeUsuario.rut === normalizedRut) {
-                return res.status(400).json({ msg: "RUT ya existe" });
-            }
-        }
-
-        const updateData = {
-            name,
-            email: email ? email.toLowerCase() : undefined,
-            role
-        };
-
-        if (normalizedRut) {
-            userData.rut = normalizedRut;
-        }  
-
-        // 🔐 solo si viene password
-        if (password) {
+        // contraseña
+        if(password){
             updateData.password = await bcrypt.hash(password, 10);
         }
+        // role
+        if(role){
+            updateData.role = role;
+        }
 
-        await User.findByIdAndUpdate(
-            req.params.id,
-            updateData,
-            { new: true }
-        );
+        // hacemos los cambios
+        await User.findByIdAndUpdate(id, updateData, {new: true});
 
-        res.json({ msg: "Usuario actualizado correctamente" });
+        res.status(200).json({ msg: "Usuario actualizado correctamente" });
 
     } catch (err) {
         res.status(500).json({
@@ -197,7 +216,7 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
     try{
         await User.findByIdAndDelete(req.params.id);
-        res.status(204).json({msg: "Usuario eliminado correctament"});
+        res.status(204).json({msg: "Usuario eliminado correctamente"});
     }catch(err){
         res.status(500).json({msg: "Error del servidor"});
     }
