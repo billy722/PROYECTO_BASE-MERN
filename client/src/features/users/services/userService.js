@@ -1,4 +1,4 @@
-import api from "./axiosInstance";
+import api from "../../../api/axiosInstance";
 
 export const getMe = async () => {
     const res = await api.get("/auth/me");

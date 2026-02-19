@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { getUsers, createUser, updateUser, deleteUser } from "../api/userService";
-import { useAlert } from "./useAlert";
-import { ALERT_TYPES } from "../constants/alertTypes";
+import { getUsers, createUser, updateUser, deleteUser } from "../services/userService";
+import { useAlert } from "../../../hooks/useAlert";
+import { ALERT_TYPES } from "../../../constants/alertTypes";
 
 export function useUsers(){
     const [users, setUsers] = useState([]);

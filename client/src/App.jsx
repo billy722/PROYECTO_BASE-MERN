@@ -4,7 +4,8 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import PrivateRoute from "./routes/PrivateRoutes";
 import MainLayout from "./layouts/MainLayout";
-import Users from "./pages/Users";
+import Users from "./features/users/pages/UsersPage";
+import CreateUser from "./features/users/pages/CreateUser";
 
 //BROWSER ROUTER ES EL CONTENEDOR PRINCIPAL DEL ROUTER, ENVUELVE TODA LA APP
 //ROUTES ES EL CONTENEDOR DE RUTAS, AQUI DEFINO QUE MOSTRAR CON CADA URL
@@ -24,7 +25,13 @@ export default function App() {
           <Route element={<PrivateRoute />}>
             <Route element={<MainLayout />}>
               <Route path="/home" element={<Home />} />
-              <Route path="/users" element={<Users/>} />
+
+              {/* SOLO PUEDE INGREAR ADMIN */}
+              <Route element={<PrivateRoute roles={["admin"]} />}>
+                <Route path="/users" element={<Users/>} />
+                <Route path="/users/new" element={<CreateUser/>} />
+              </Route>
+
             </Route>
           </Route>
 

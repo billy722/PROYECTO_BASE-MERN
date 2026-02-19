@@ -14,7 +14,7 @@ export default function Modal(){
         <div className="modal-backdrop">
             <div className={`modal ${modal.type}`}>
                 <h3>{modal.title}</h3>
-                <p>{modal.message}</p>
+                {modal.content ? modal.content : <p>{modal.message}</p>}
 
                 <div className="actions">
                    

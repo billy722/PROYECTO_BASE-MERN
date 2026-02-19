@@ -46,12 +46,6 @@ export default function Login(){
 
            
             showAlert("Bienvenido", ALERT_TYPES.SUCCESS);
-            // modal.show({
-            //     type: "success",
-            //     title: "Bienvenido",
-            //     message: "Has ingresado correctamente",
-            // });
-
 
             navigate("/home");
 

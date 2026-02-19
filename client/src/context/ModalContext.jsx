@@ -10,15 +10,17 @@ export function ModalProvider({children}){
         title: "",
         message: "",
         onConfirm: null,
+        content: null
     });
 
-    const show = ({type, title, message, onConfirm}) => {
+    const show = ({type, title, message, onConfirm, content}) => {
         setModal({
             open:true,
             type,
             title,
             message,
             onConfirm: onConfirm || null,
+            content: content || null
         });
     };
 
