@@ -33,9 +33,13 @@ export default function Users(){
     };
 
     const handleAddUser = async (data) => {
-        await addUser(data);
-        close(); //cerramos el modal
-    }
+        try {
+          await addUser(data);
+          close();
+        } catch (error) {
+          console.error(error);
+        }
+      };
 
     return (
         <div className="page">

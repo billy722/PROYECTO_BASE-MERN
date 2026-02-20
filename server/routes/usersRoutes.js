@@ -4,6 +4,10 @@ import { requireRole } from "../middlewares/roleMiddleware.js";
 import User from "../models/User.js";
 import { normalizeRut, validateRut } from "../utils/rut.js";
 import bcrypt from 'bcryptjs';
+import { validateUserInput } from "../validators/user.validator.js";
+import { validateUserBussinessRules } from "../services/user.service.js";
+import { sendValidationError } from "../utils/sendValidationError.js";
+
 
 const router = express.Router();
 
@@ -26,66 +30,43 @@ router.get("/", async (req, res) => {
 //POST DE USUARIO CON CON RUT O EMAIL
 router.post('/', authMiddleware, async (req, res) => {
     try{
+        const validationErrors = {};
 
-        console.log('Body recibido: ', req.body);
-
-        const {name, email, rut, password, role} = req.body;
-
-        if(!password){
-            return res.status(400).json({msg: "La contraseña es obligatoria"});
+        //VALIDACIONES DE FORMATO
+        const inputErrors = validateUserInput(req.body)
+        if(inputErrors){
+            return sendValidationError(res, inputErrors)
+        } 
+          
+        //AHORA CONSULTAMOS A BD
+        const bussinessErrors = await validateUserBussinessRules(req.body);
+        if(bussinessErrors){
+            return sendValidationError(res, bussinessErrors)
         }
 
-        if (!email && !rut) {
-            return res.status(400).json({
-              msg: "Debe ingresar email o RUT"
-            });
-          }
-
-        let normalizedRut = null;
-
-        if (rut) {
-            if (!validateRut(rut)) {
-              return res.status(400).json({ msg: "RUT inválido" });
-            }
-            normalizedRut = normalizeRut(rut);
-          }
-          
-          const existeUsuario = await User.findOne({
-            $or: [
-                email ? { email: email.toLowerCase()} : null,
-                normalizedRut ? { rut: normalizedRut } : null
-            ].filter(Boolean)
-          });
-        
-          if(existeUsuario) {
-            if(existeUsuario.email === email?.toLowerCase()) {
-                return res.status(400).json({ msg: "Correo ya registrado" });
-            }
-            if(existeUsuario.rut === normalizedRut){
-                return res.status(400).json({ msg: "RUT ya existe"});
-            }
-          }
+        // CREAMOS USUARIO
+        const { name, email, rut , password, role } = req.body;
 
         const hashed = await bcrypt.hash(password, 10);
 
         const userData = {
             name,
-            email,
+            email: email?.toLowerCase(),
             password: hashed,
             role
           };
 
-        if (normalizedRut) {
-            userData.rut = normalizedRut;
+        if (rut) {
+            userData.rut = normalizRut(rut);
         }  
 
         const nuevoUsuario = new User(userData);
         await nuevoUsuario.save();
 
-        res.status(201).json({msg: "Usuario creado correctamente"});
+        res.status(201).json({message: "Usuario creado correctamente"});
 
     }catch(err){
-        res.status(500).json({msg: 'Error en el servidor', error: err.message });
+        res.status(500).json({message: 'Error en el servidor', error: err.message });
     }
 });
 
