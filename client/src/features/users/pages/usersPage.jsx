@@ -2,7 +2,7 @@ import { useUsers } from "../hooks/useUsers";
 import { useModal } from "../../../hooks/useModal";
 import { MODAL_TYPES } from "../../../constants/modalTypes";
 import UsersTable from "../components/usersTable";
-import UserFormModal from "../components/UserFormModal";
+import UserFormModal from "../components/UserForm";
 import { useNavigate } from "react-router-dom";
 export default function Users(){
     const { users, removeUser, addUser } = useUsers();
@@ -37,7 +37,8 @@ export default function Users(){
           await addUser(data);
           close();
         } catch (error) {
-          console.error(error);
+          console.error("Error recibido en el cliente", error);
+          throw error; //paso el error al formulario
         }
       };
 

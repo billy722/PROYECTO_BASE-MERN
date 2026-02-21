@@ -4,10 +4,10 @@
 // Email válido
 // Password obligatorio
 
-import { validateRut } from "../utils/rut";
+import { validateRut } from "../utils/rut.js";
 
 export function validateUserInput(data){
-    const {name, email, ru, password} = data;
+    const {name, email, rut, password} = data;
 
     const errors = {};
 

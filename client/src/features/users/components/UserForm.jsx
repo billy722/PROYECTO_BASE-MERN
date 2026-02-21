@@ -1,6 +1,9 @@
 import { useState } from "react";
+import "./userForm.css";
 
 export default function UserFormModal({ onSubmit }){
+    const [errors, setErrors] = useState({});
+
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -16,9 +19,18 @@ export default function UserFormModal({ onSubmit }){
         });
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        onSubmit(form);
+
+        try{
+            await onSubmit(form);
+            setErrors({});
+        }catch(error){
+            if(error.response?.data?.errors){
+                setErrors(error.response.data.errors);
+            }
+        }
+
     }
 
     return(
@@ -38,6 +50,8 @@ export default function UserFormModal({ onSubmit }){
                 value={form.email}
                 onChange={handleChange}
             />
+            {errors.email && <p className="error">{errors.email}</p>}
+
 
             <input 
                 name="rut"
@@ -45,6 +59,8 @@ export default function UserFormModal({ onSubmit }){
                 value={form.rut}
                 onChange={handleChange}
             />
+            {errors.rut && <p className="error">{errors.rut}</p>}
+            
 
             <input 
                 name="password"
@@ -54,11 +70,15 @@ export default function UserFormModal({ onSubmit }){
                 onChange={handleChange}
                 required
             />
+            {errors.password && <p className="error">{errors.password}</p>}
+
 
             <select name="role" value={form.role} onChange={handleChange}>
                 <option value="admin">Administrador</option>
                 <option value="user">Usuario</option>
             </select>
+            {errors.role && <p className="error">{errors.role}</p>}
+
 
             <button type="submit">Guardar</button>
         </form>

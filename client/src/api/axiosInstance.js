@@ -39,7 +39,9 @@ api.interceptors.response.use(
 
         if(error.response){
 
-            if (error.response.status === 401){
+            const {status, data} = error.response;
+
+            if (status === 401){
     
                 uiEvents.showAlert("Sesión expirada", "error");
     
@@ -51,8 +53,9 @@ api.interceptors.response.use(
                 window.location.href = "/login";
     
                 authEvents.onLogout?.();
-            }else{
-                uiEvents.showAlert?.(error.response.data?.msg || "Error del servidor", "error");
+
+            }else if (status >= 500) {
+                uiEvents.showAlert("Error del servidor", "error");
             }
 
         }else{

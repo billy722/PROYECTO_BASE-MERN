@@ -21,8 +21,11 @@ export function useUsers(){
             await createUser(data);
             showAlert("Usuario creado.", ALERT_TYPES.SUCCESS);
             fetchUsers();
-        }catch{
-            showAlert("Error al crear usuario.", ALERT_TYPES.ERROR)
+        }catch(error){
+            if(error.response?.data?.type !== "validation"){
+                showAlert("Error al crear usuario.", ALERT_TYPES.ERROR)
+            }
+            throw error; //envio el error al componente que lo usa
         }
     };
 

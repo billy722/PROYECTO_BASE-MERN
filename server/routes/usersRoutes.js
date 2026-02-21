@@ -57,7 +57,7 @@ router.post('/', authMiddleware, async (req, res) => {
           };
 
         if (rut) {
-            userData.rut = normalizRut(rut);
+            userData.rut = normalizeRut(rut);
         }  
 
         const nuevoUsuario = new User(userData);

@@ -2,8 +2,8 @@
 // Email ya existe
 // RUT ya existe
 
-import User from "../models/User";
-import { normalizeRut } from "../utils/rut";
+import User from "../models/User.js";
+import { normalizeRut } from "../utils/rut.js";
 
 export async function validateUserBussinessRules(data){
     const { email, rut } = data;
@@ -26,7 +26,7 @@ export async function validateUserBussinessRules(data){
         if(existingUser.email === email?.toLowerCase()){
             errors.email = "Correo ya registrado."
         }
-        if(existingUser.rut === normalizeRut){
+        if(existingUser.rut === normalizedRut){
             errors.rut = "RUT ya existe."
         }
     }
