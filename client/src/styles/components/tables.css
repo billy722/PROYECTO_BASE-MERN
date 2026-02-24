@@ -1,0 +1,6 @@
+.table{
+    width: 100%;
+    background-color: var(--bg-table);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+}

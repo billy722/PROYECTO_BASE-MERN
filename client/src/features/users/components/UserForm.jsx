@@ -37,6 +37,7 @@ export default function UserFormModal({ onSubmit }){
         <form onSubmit={handleSubmit} className="form">
 
             <input 
+                className="input"
                 name="name"
                 placeholder="Nombre"
                 value={form.name}
@@ -45,24 +46,27 @@ export default function UserFormModal({ onSubmit }){
             />
 
             <input 
+                className={`input ${errors.email ? "input-error" : "" }`}
                 name="email"
                 placeholder="Email"
                 value={form.email}
                 onChange={handleChange}
             />
-            {errors.email && <p className="error">{errors.email}</p>}
+            {errors.email && <p className="form-error">{errors.email}</p>}
 
 
             <input 
+                className={`input ${errors.rut ? "input-error" : "" }`}
                 name="rut"
                 placeholder="RUT"
                 value={form.rut}
                 onChange={handleChange}
             />
-            {errors.rut && <p className="error">{errors.rut}</p>}
+            {errors.rut && <p className="form-error">{errors.rut}</p>}
             
 
             <input 
+                className={`input ${errors.password ? "input-error" : "" }`}
                 name="password"
                 type="password"
                 placeholder="Contraseña"
@@ -70,17 +74,17 @@ export default function UserFormModal({ onSubmit }){
                 onChange={handleChange}
                 required
             />
-            {errors.password && <p className="error">{errors.password}</p>}
+            {errors.password && <p className="form-error">{errors.password}</p>}
 
 
-            <select name="role" value={form.role} onChange={handleChange}>
+            <select name="role" value={form.role} onChange={handleChange} className={`input ${errors.role ? "input-error" : "" }`}>
                 <option value="admin">Administrador</option>
                 <option value="user">Usuario</option>
             </select>
-            {errors.role && <p className="error">{errors.role}</p>}
+            {errors.role && <p className="form-error">{errors.role}</p>}
 
 
-            <button type="submit">Guardar</button>
+            <button className="btn btn-primary" type="submit">Guardar</button>
         </form>
     );
 }

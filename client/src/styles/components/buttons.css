@@ -4,6 +4,7 @@
     border: none;
     cursor: pointer;
     font-weight: 500;
+    margin-bottom: var(--space-sm);
 }
 
 .btn-primary{ background: var(--primary); color: white; }

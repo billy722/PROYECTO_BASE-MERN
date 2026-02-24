@@ -47,7 +47,7 @@ export default function Users(){
             <h1>Usuarios</h1>
 
             <button 
-                className="btn" 
+                className="btn btn-primary" 
                 onClick={handleCreate}    
             >+ Crear usuario</button>
             <UsersTable users={users} onDelete={handleDelete} />

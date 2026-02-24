@@ -19,9 +19,9 @@
 .modal h3{
     padding-bottom: 10px;
 }
-.modal p{
+/* .modal p{
     padding-bottom: 10px;
-}
+} */
 
 .modal.success { border-left: 5px solid #2ecc71; }
 .modal.info    { border-left: 5px solid #3498db; }
@@ -39,11 +39,3 @@
     color: white;
 }
 
-.btn{
-    border-width: 0;
-}
-
-.btn.success { background: #2ecc71; }
-.btn.info    { background: #3498db; }
-.btn.warning { background: #f1c40f; color: black; }
-.btn.danger  { background: #e74c3c; }

@@ -1,3 +1,4 @@
+import "./userTable.css";
 
 export default function UsersTable({users, onDelete}){
     if (users.lenght === 0){
@@ -23,7 +24,7 @@ export default function UsersTable({users, onDelete}){
                         <td>{user.rut || "-"}</td>
                         <td>{user.role}</td>
                         <td>
-                            <button onClick={() => onDelete(user)}>Eliminar</button>
+                            <button className="btn btn-danger" onClick={() => onDelete(user)}>Eliminar</button>
                         </td>
                     </tr>
                 ) )}

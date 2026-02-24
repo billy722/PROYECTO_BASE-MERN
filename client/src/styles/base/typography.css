@@ -3,11 +3,29 @@ body{
     color: --var(--dark);
 }
 
-h1 { font-size: 24px; margin-bottom: var(--space-md); }
-h2 { font-size: 24px; margin-bottom: var(--space-sm); }
-h3 { font-size: 24px; margin-bottom: var(--space-sm); }
+h1 { 
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold); 
+    margin-bottom: var(--space-md); 
+}
+
+h2 { 
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold); 
+    margin-bottom: var(--space-sm); 
+}
+
+h3 { 
+    font-size: var(--font-size-lg); 
+    margin-bottom: var(--space-sm); 
+}
 
 p {
+    font-size: var(--font-size-md);
     margin-bottom: var(--space-sm);
     line-height: 1.4;
+}
+
+small{
+    font-size: var(--font-size-sm);
 }

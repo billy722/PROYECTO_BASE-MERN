@@ -18,7 +18,7 @@ export default function Modal(){
 
                 <div className="actions">
                    
-                    <button className={`btn btn-close ${modal.type}`} onClick={close}>Cerrar</button>
+                    <button className={`btn btn-outline ${modal.type}`} onClick={close}>Cerrar</button>
 
                     {isConfirm && <button className="confirm" onClick={confirm}>Confirmar</button>}
 

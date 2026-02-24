@@ -17,6 +17,7 @@ export default function Navbar() {
                 <Link to="/home">Home</Link>
                 <Link to="/pagina1">Pagina uno</Link>
                 <Link to="/pagina1">Pagina dos</Link>
+                {user.role == "admin" ? <Link to="/users">Usuarios</Link> : null }
             </div>
 
             <div className="navbar-section right">
