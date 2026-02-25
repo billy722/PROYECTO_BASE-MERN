@@ -11,6 +11,7 @@ export default function Navbar() {
 
             <div className="navbar-section left">
                 <strong>Logo App Base </strong>
+                <img className="logo-app" src="../public/vite.svg" />
             </div>
 
             <div className="navbar-section center">
@@ -24,11 +25,17 @@ export default function Navbar() {
 
                 {user && (
                     <>
-                    <span>
-                        <p>{user.name} ({user.role})</p>
-                    </span>
-                    <ThemeToggle />
-                    <button onClick={logout}>Cerrar sesión</button>
+                        <div>
+                            <div>
+                                <ThemeToggle />
+                                <button className="btn btn-warning" onClick={logout}>Cerrar sesión</button>
+                            </div>
+                            <div>
+                                <span>
+                                    <p>{user.name}: {user.role}</p>
+                                </span>
+                            </div>
+                        </div>
                     </>
                 )}
             </div>

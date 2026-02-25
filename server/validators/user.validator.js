@@ -12,10 +12,10 @@ export function validateUserInput(data){
     const errors = {};
 
     if (!name || name.trim() === "" ){
-        errors.mame = "El nombre es obligatorio.";
+        errors.name = "El nombre es obligatorio.";
     }
 
-    if(!password){
+    if(!password || password.trim() === ""){
         errors.password = "La contraseña es obligatoria.";
     }
 
@@ -23,10 +23,12 @@ export function validateUserInput(data){
         errors.general = "Debe ingresar email o RUT";
     }
 
-    if(rut && !validateRut(rut)){
-        errors.rut = "RUT inválido.";
+    if (rut){
+        if (!validateRut(rut)) {
+          errors.rut = "RUT inválido.";
+        }
     }
 
-    return Object.keys(errors).lenght > 0 ? errors : null;
+    return Object.keys(errors).length > 0 ? errors : null;
 
 }

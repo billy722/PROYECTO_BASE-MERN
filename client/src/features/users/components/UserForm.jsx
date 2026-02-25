@@ -1,15 +1,15 @@
 import { useState } from "react";
 import "./userForm.css";
 
-export default function UserFormModal({ onSubmit }){
+export default function UserFormModal({ onSubmit,initialData = null, isEdit = false }){
     const [errors, setErrors] = useState({});
 
     const [form, setForm] = useState({
-        name: "",
-        email: "",
-        rut: "",
+        name: initialData?.name || "",
+        email: initialData?.email || "",
+        rut: initialData?.rut || "",
         password: "",                                           
-        role: "user"
+        role: initialData?.role || "user"
     });
 
     const handleChange = (e) => {
@@ -84,7 +84,9 @@ export default function UserFormModal({ onSubmit }){
             {errors.role && <p className="form-error">{errors.role}</p>}
 
 
-            <button className="btn btn-primary" type="submit">Guardar</button>
+            <button className="btn btn-primary" type="submit">
+                {isEdit ? "Editar" : "Guardar" }
+            </button>
         </form>
     );
 }

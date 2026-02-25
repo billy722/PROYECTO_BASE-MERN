@@ -34,8 +34,8 @@ export function useUsers(){
             await updateUser(id, data);
             showAlert("Usuario actualizado", ALERT_TYPES.SUCCESS);
             fetchUsers();
-        }catch{
-            showAlert("Error al editar el usuario.", ALERT_TYPES.ERROR)
+        }catch(error){
+            throw error;//envio el error al componente que lo usa
         }
     };
 
@@ -44,8 +44,10 @@ export function useUsers(){
             await deleteUser(id);
             showAlert("Usuario eliminado.", ALERT_TYPES.SUCCESS);
             fetchUsers();
-        }catch{
+        }catch(error){
             showAlert("Error al eliminar el usuario.", ALERT_TYPES.ERROR);
+            throw error;
+            //envio el error al componente que lo usa
         }
     };
 

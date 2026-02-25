@@ -1,6 +1,6 @@
 import "./userTable.css";
 
-export default function UsersTable({users, onDelete}){
+export default function UsersTable({users, onDelete, onEdit}){
     if (users.lenght === 0){
         return <p>No hay usuarios.</p>
     }
@@ -23,6 +23,9 @@ export default function UsersTable({users, onDelete}){
                         <td>{user.email || "-"}</td>
                         <td>{user.rut || "-"}</td>
                         <td>{user.role}</td>
+                        <td>
+                            <button className="btn btn-warning" onClick={() => onEdit(user)}>Editar</button>
+                        </td>
                         <td>
                             <button className="btn btn-danger" onClick={() => onDelete(user)}>Eliminar</button>
                         </td>

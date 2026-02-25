@@ -5,7 +5,7 @@ import User from "../models/User.js";
 import { normalizeRut, validateRut } from "../utils/rut.js";
 import bcrypt from 'bcryptjs';
 import { validateUserInput } from "../validators/user.validator.js";
-import { validateUserBussinessRules } from "../services/user.service.js";
+import { validateUserBussinessRules, buildUserUpdateData } from "../services/user.service.js";
 import { sendValidationError } from "../utils/sendValidationError.js";
 
 
@@ -89,10 +89,9 @@ router.post('/', authMiddleware, async (req, res) => {
 //     }
 // });
 
-router.put("/:id", authMiddleware,async (req, res) => {
+router.patch("/:id", authMiddleware,async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, email, rut, password, role } = req.body;
 
         // solo admin puede editar usuarios
         if(req.user.role !== "admin"){
@@ -105,63 +104,17 @@ router.put("/:id", authMiddleware,async (req, res) => {
             return res.status(404).json({msg: "Usuario no encontrado"});
         }
 
-        // donde guardamos info para actualizar
-        const updateData = {};
-
-        //se actulaiza nombre
-        if(name) updateData.name = name;
-
-        //email (opcions)
-        if(email !== undefined){
-            const existsEmail = await User.finOne({
-                email: email.toLowerCase(),
-                _id: { $ne: id }
-            });
-
-            if(existsEmail){
-                return res.status(400).json({msg: "Correo ya registrado"});
-            }
-
-            updateData.email = email.toLowerCase();
+        const inputErrors = await validateUserInput(req.body);
+        if(inputErrors){
+            return sendValidationError(res, inputErrors);
         }
 
-        // RUT (opcional)
-        if(rut !== undefined){
-
-            //si el rut viene en el body pero vacio
-            if(rut === ""){
-                // eliminar rut
-                updateData.$unset = {rut: ""};
-            }else{
-                // si viene un rut desde el form
-                if(!validateRut(rut)){
-                    return res.status(400).json({msg: "RUT ingresado es invalido"});
-                }
-
-                const normalizedRut = normalizeRut(rut);
-
-                const existeRut = await User.findOne({
-                    rut: normalizedRut,
-                    _id: { $ne: id }
-                });
-
-                if(existeRut){
-                    return res.status(400).json({msg: "RUT ingresado ya existe"});
-                }
-
-                updateData.rut = normalizedRut;
-            }
-
+        const bussinessErrors = await validateUserBussinessRules(req.body, id);
+        if(bussinessErrors){
+            return sendValidationError(res, bussinessErrors);
         }
-
-        // contraseña
-        if(password){
-            updateData.password = await bcrypt.hash(password, 10);
-        }
-        // role
-        if(role){
-            updateData.role = role;
-        }
+        
+        const updateData = await buildUserUpdateData(req.body);
 
         // hacemos los cambios
         await User.findByIdAndUpdate(id, updateData, {new: true});
