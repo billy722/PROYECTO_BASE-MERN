@@ -7,6 +7,7 @@ import usersRoutes from './routes/usersRoutes.js';
 import fs from 'fs';
 import colors from 'colors';
 import { execSync } from 'child_process';
+import { errorHandler } from './middlewares/errorHandler.js';
 
 //detectar rama actual de git
 let currentBranch = "unknown";
@@ -40,6 +41,8 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth/', authRoutes);
 app.use('/api/users/', usersRoutes);
+// 👇 SIEMPRE el último middleware
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 4000;
 

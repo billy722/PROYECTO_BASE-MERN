@@ -16,24 +16,24 @@ router.use(authMiddleware);
 router.use(requireRole("admin"));
 
 //obtener usuarios
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
     try{
         const users = await User.find().select("-password");
         res.json(users);
 
     }catch(err){
-        res.status(500).json({msg: "Error del servidor"});
+        next(err);
     }
 });
 
 
 //POST DE USUARIO CON CON RUT O EMAIL
-router.post('/', authMiddleware, async (req, res) => {
+router.post('/', async (req, res, next) => {
     try{
         const validationErrors = {};
 
         //VALIDACIONES DE FORMATO
-        const inputErrors = validateUserInput(req.body)
+        const inputErrors = validateUserInput(req.body, false)
         if(inputErrors){
             return sendValidationError(res, inputErrors)
         } 
@@ -66,7 +66,7 @@ router.post('/', authMiddleware, async (req, res) => {
         res.status(201).json({message: "Usuario creado correctamente"});
 
     }catch(err){
-        res.status(500).json({message: 'Error en el servidor', error: err.message });
+        next(err);
     }
 });
 
@@ -82,29 +82,23 @@ router.post('/', authMiddleware, async (req, res) => {
 //         });
 
 //         await user.save();
-//         res.status(201).json({msg: "Usuario creado"});
+//         res.status(201).json({message: "Usuario creado"});
 
 //     }catch(err){
-//         res.status(500).json({msg: "Error del servidor"});
+//         res.status(500).json({message: "Error del servidor"});
 //     }
 // });
 
-router.patch("/:id", authMiddleware,async (req, res) => {
+router.patch("/:id", async (req, res, next) => {
     try {
         const { id } = req.params;
 
         // solo admin puede editar usuarios
         if(req.user.role !== "admin"){
-            return res.status(403).json({msg: "Usuario no autorizado"});
+            return res.status(403).json({message: "Usuario no autorizado"});
         }
 
-        // usuario existe?
-        const user = await User.findById(id);
-        if(!user){
-            return res.status(404).json({msg: "Usuario no encontrado"});
-        }
-
-        const inputErrors = await validateUserInput(req.body);
+        const inputErrors = await validateUserInput(req.body, true);
         if(inputErrors){
             return sendValidationError(res, inputErrors);
         }
@@ -115,17 +109,19 @@ router.patch("/:id", authMiddleware,async (req, res) => {
         }
         
         const updateData = await buildUserUpdateData(req.body);
+        console.log(updateData)
 
         // hacemos los cambios
-        await User.findByIdAndUpdate(id, updateData, {new: true});
+        const updatedUser = await User.findByIdAndUpdate(id, updateData, {new: true});
 
-        res.status(200).json({ msg: "Usuario actualizado correctamente" });
+        if(!updatedUser){
+           return res.status(404).json({message: "Usuario no encontrado."});
+        }
+        
+        res.status(200).json({ message: "Usuario actualizado correctamente" });
 
     } catch (err) {
-        res.status(500).json({
-            msg: "Error del servidor",
-            error: err.message
-        });
+        next(err);
     }
 });
 
@@ -141,19 +137,23 @@ router.patch("/:id", authMiddleware,async (req, res) => {
 //             role
 //         });
 
-//         res.json({ msg: "Usuario actualizado" });
+//         res.json({ message: "Usuario actualizado" });
 //     } catch (err) {
-//         res.status(500).json({ msg: "Error del servidor" });
+//         res.status(500).json({ message: "Error del servidor" });
 //     }
 // });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", async (req, res, next) => {
     try{
         await User.findByIdAndDelete(req.params.id);
-        res.status(204).json({msg: "Usuario eliminado correctamente"});
+        res.status(204).json({message: "Usuario eliminado correctamente"});
     }catch(err){
-        res.status(500).json({msg: "Error del servidor"});
+        next(err);
     }
 });
+
+router.get("/test-error", (req, res) => {
+    throw new Error("Error forzado");
+  });
 
 export default router;

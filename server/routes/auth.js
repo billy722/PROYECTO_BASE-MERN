@@ -9,7 +9,7 @@ const router = express.Router();
 
 //REGISTRAR USUARIO
 
-router.post('/register', async (req, res) => {
+router.post('/register', async (req, res, next) => {
     try{
 
         console.log('Body recibido: ', req.body);
@@ -54,13 +54,13 @@ router.post('/register', async (req, res) => {
         res.json({message: "Usuario creado correctamente"});
 
     }catch(err){
-        res.status(500).json({message: 'Error en el servidor', error: err.message });
+        next(err);
     }
 });
 
 //LOGIN
 
-router.post('/login', async (req,res) => {
+router.post('/login', async (req,res, next) => {
     try{
 
         const {identifier, password} = req.body;
@@ -91,12 +91,12 @@ router.post('/login', async (req,res) => {
         });
 
     }catch(err){
-        res.status(500).json({message: 'Error en el servidor', error: err.message});
+        next(err);
     }
 });
 
 //OBTENER USUARIO LOGEADO
-router.get("/me", authMiddleware, async (req, res) => {
+router.get("/me", authMiddleware, async (req, res, next) => {
     try{
         const user = await User.findById(req.user.id).select("-password");
 
@@ -107,7 +107,7 @@ router.get("/me", authMiddleware, async (req, res) => {
         res.json(user);
 
     }catch(err){
-        res.status(500).json({message: "Error del servidor"});
+        next(err);
     }
 });
 

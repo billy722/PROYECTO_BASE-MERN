@@ -69,10 +69,10 @@ export default function UserFormModal({ onSubmit,initialData = null, isEdit = fa
                 className={`input ${errors.password ? "input-error" : "" }`}
                 name="password"
                 type="password"
-                placeholder="Contraseña"
+                placeholder={isEdit ? "Nueva contraseña (Opcional)" : "Contraseña"}
                 value={form.password}
                 onChange={handleChange}
-                required
+                required={!isEdit}
             />
             {errors.password && <p className="form-error">{errors.password}</p>}
 

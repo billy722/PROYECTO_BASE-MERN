@@ -6,7 +6,7 @@
 
 import { validateRut } from "../utils/rut.js";
 
-export function validateUserInput(data){
+export function validateUserInput(data, isUpdate = false){
     const {name, email, rut, password} = data;
 
     const errors = {};
@@ -15,9 +15,14 @@ export function validateUserInput(data){
         errors.name = "El nombre es obligatorio.";
     }
 
-    if(!password || password.trim() === ""){
+    if(!isUpdate && !password){//si la validacion es para crear usuario
+    
         errors.password = "La contraseña es obligatoria.";
+    
+    }else if(!isUpdate && password.trim() === ""){
+        errors.password = "La contraseña no puede estar vacía."
     }
+
 
     if(!email && !rut){
         errors.general = "Debe ingresar email o RUT";
