@@ -5,6 +5,7 @@
     cursor: pointer;
     font-weight: 500;
     margin-bottom: var(--space-sm);
+    width: 100%;
 }
 
 .btn-primary{ background: var(--primary); color: white; }

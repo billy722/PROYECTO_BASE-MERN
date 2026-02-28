@@ -20,3 +20,33 @@
 .text-center{
     text-align: center;
 }
+
+.text-primary{
+    color: var(--primary);
+}
+.text-danger{
+    color: var(--danger);
+}
+.text-light{
+    color: var(--light);
+}
+.text-dark{
+    color: var(--dark);
+}
+
+/* helper para background */
+.bg-primary{
+    background-color: var(--primary) !important;
+}
+.bg-warning{
+    background-color: var(--warning) !important;
+}
+.bg-danger{
+    background-color: var(--danger) !important;
+}
+.bg-light{
+    background-color: var(--light) !important;
+}
+.bg-dark{
+    background-color: var(--dark) !important;
+}

@@ -63,10 +63,12 @@ export default function Login(){
 
             <div className="login-form-container">
 
+                <img className="logo" src="../public/vite.svg" alt="" />
                 <h1>Login</h1>
 
                 <form onSubmit={handleSubmit}>
                     <input 
+                        className="input"
                         type="text"
                         placeholder="Email o RUT"
                         value={identifier}
@@ -76,6 +78,7 @@ export default function Login(){
                     <br/>
 
                     <input 
+                    className="input"
                     type="password"
                     placeholder="Contraseña"
                     value={password}
@@ -84,11 +87,11 @@ export default function Login(){
 
                     <br/>
 
-                    <button type="submit">Enviar</button>
+                    <button className="btn btn-outline text-light bg-primary" type="submit">Enviar</button>
 
                 </form>
 
-                {error && <p style={{ color:"red"}}>{error}</p>}
+                {error && <p className={"text-danger"}>{error}</p>}
 
             </div>
 

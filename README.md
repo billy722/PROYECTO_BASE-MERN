@@ -1,4 +1,4 @@
-# MERN Starter – React + Node + JWT
+# Proyecto Base Fullstack
 
 Este repositorio es un **starter MERN profesional** pensado para servir como base reutilizable para aplicaciones reales.
 
@@ -10,6 +10,51 @@ Este repositorio es un **starter MERN profesional** pensado para servir como bas
 * Facilitar reutilización y mantenimiento
 
 ---
+BASE:
+
+React + Express + MongoDB
+
+Arquitectura modular reutilizable para construir CRUDs de manera escalable y ordenada.
+
+---
+
+## Instalación
+
+### Backend
+cd server
+npm install
+npm run dev
+
+### Frontend
+cd client
+npm install
+npm run dev
+
+---
+
+## Estructura General
+
+/client → Frontend  
+/server → Backend  
+
+Ver documentación detallada en:
+
+- docs/ARCHITECTURE.md
+- docs/FLOW.md
+
+---
+
+## Características
+
+- Arquitectura modular
+- CRUD replicable
+- Manejo global de errores
+- Validaciones separadas por capa
+- Sistema de estilos consistente
+- Autenticación con roles
+
+---
+
 
 ## 🧱 Arquitectura general
 
@@ -177,3 +222,4 @@ Si algo parece "más largo" de lo necesario, probablemente está así para:
 * ser entendible en el futuro
 
 ---
+
