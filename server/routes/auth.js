@@ -79,7 +79,7 @@ router.post('/login', async (req,res, next) => {
         if (!coincide) return res.status(400).json({message: 'Credenciasles incorrectas'});
 
         const token = jwt.sign(
-            {id: usuario._id, role: usuario.role},
+            {id: usuario._id},
             process.env.JWT_SECRET,
             { expiresIn: '1h'}
         );

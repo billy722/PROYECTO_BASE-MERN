@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
+import User from "../models/User";
 
-
-const authMiddleware = (req, res, next) => {
+const authMiddleware = async (req, res, next) => {
 
     const authHeader = req.headers.authorization;
 
@@ -17,8 +17,15 @@ const authMiddleware = (req, res, next) => {
         //verificar el token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+        // consulta en db los datos del usuario logeado
+        const user = await User.findById(decoded.id);
+
+        if(!user){
+            return res.status(401).json({message: "Usuario no existe."});
+        }
+
         //Guardar usuario en la request
-        req.user = decoded; //{id, role, iat, exp}
+        req.user = user; //usuario de la bd a la request
 
         next(); //seguir a la ruta
 

@@ -1,6 +1,6 @@
 import express from "express";
 import authMiddleware from "../middlewares/authMiddleware.js";
-import { requireRole } from "../middlewares/roleMiddleware.js";
+import { requirePermission } from "../middlewares/requirePermission.js";
 import User from "../models/User.js";
 import { normalizeRut, validateRut } from "../utils/rut.js";
 import bcrypt from 'bcryptjs';
@@ -13,10 +13,9 @@ const router = express.Router();
 
 //define que todo lo que sigue requiere de login y que usuario sea admin
 router.use(authMiddleware);
-router.use(requireRole("admin"));
 
 //obtener usuarios
-router.get("/", async (req, res, next) => {
+router.get("/", requirePermission("user.read"), async (req, res, next) => {
     try{
         const users = await User.find().select("-password");
         res.json(users);
@@ -28,7 +27,7 @@ router.get("/", async (req, res, next) => {
 
 
 //POST DE USUARIO CON CON RUT O EMAIL
-router.post('/', async (req, res, next) => {
+router.post('/', requirePermission("user.create"), async (req, res, next) => {
     try{
         const validationErrors = {};
 
@@ -89,14 +88,9 @@ router.post('/', async (req, res, next) => {
 //     }
 // });
 
-router.patch("/:id", async (req, res, next) => {
+router.patch("/:id", requirePermission("user.update"),async (req, res, next) => {
     try {
         const { id } = req.params;
-
-        // solo admin puede editar usuarios
-        if(req.user.role !== "admin"){
-            return res.status(403).json({message: "Usuario no autorizado"});
-        }
 
         const inputErrors = await validateUserInput(req.body, true);
         if(inputErrors){
@@ -143,7 +137,7 @@ router.patch("/:id", async (req, res, next) => {
 //     }
 // });
 
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", requirePermission("user.delete") , async (req, res, next) => {
     try{
         await User.findByIdAndDelete(req.params.id);
         res.status(204).json({message: "Usuario eliminado correctamente"});
